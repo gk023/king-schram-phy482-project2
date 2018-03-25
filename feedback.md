@@ -11,6 +11,7 @@ Thanks, Danny
 
 Feedback: Folks, the plan that you have here works for me and helps me understand what you will be doing. It does appear that the responsbilities on the project haven't been parted out as much as they probably should be (i.e., who is going to do what) and this might become a problem later as you are working on this. I'm still also curious as to what you intend to model, but I guess you plan to think through that this week and share it. My reminder would be to aim small first and think about aspects that could be added on as you want.
 
+
 * Score: 16/20
 
 ## Homework assignment 1
