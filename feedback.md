@@ -7,6 +7,12 @@ Thanks, Danny
 
 ------
 
+## Homework assignment 4
+
+Feedback: Folks, I'm glad to see that you are getting something that works (at least for a short timescale). I'm also glad to see you trying to debug it and think about other resources that can help you with it. The kind of problem that you solving is sometimes the result of a stiff equation (https://en.wikipedia.org/wiki/Stiff_equation) where for some regime the problem can be solved easily, but then you get to a point where things change a lot you need a narrower window to solve it (i.e., an adaptive solution). This is because the errors you make compund really fast. Now that you have written things from scratch, you might compare this to a simple 4th order Runge-Kutta solver, which is a also easy to write (I have a book that you can use or you can google it) or a builtin scipy integrator (https://docs.scipy.org/doc/scipy-0.13.0/reference/generated/scipy.integrate.ode.html). Even if you don't solve this issue, it would be interesting to compare the different numerical approaches to find out what kind of issue you think you are having. A lot of computational research is finding or developing the right algorithm to control errors like this. It might not seem like it right now because it's not working, but you are doing good work that has to be done.
+
+* Score: 20/20
+
 ## Homework assignment 3
 
 Feedback: Folks, I'm glad to see you both working on this together. I think I have a much better idea of what you plan to do, but you might want to look into the Finite Difference Method and you might want to further restrict your problem. Some resources on solving PDEs numerically are here: https://ocw.mit.edu/courses/aeronautics-and-astronautics/16-920j-numerical-methods-for-partial-differential-equations-sma-5212-spring-2003/lecture-notes/ THere's some Python packages that could help you, but the finite difference method is also easy enough to code by hand. I have a book in my office that might also be of use to you and feel free to come by and look through it or borrow it. Solving MHD in general is really tough (ask the nuclear astro people!), so I want you to think about what's the simplest model that we cna solve with this and then what might be the next extension to it (if it's not enough). I'm worried about you still have a bit more of a complex project than I expect of you. Feel free to wow us, but also I don't want you to be overwhelmed. I'm looking forward to seeing your model next week, which will help me know where you are.
