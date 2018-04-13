@@ -15,13 +15,14 @@ import numpy as np
 import matplotlib.gridspec as gridspec
 
 tf=1.0#final time in seconds
-tstep=0.001#size of the time step
-x0=2*np.pi #magnitude of min/max x value
-y0=2*np.pi#" y value
-step=0.02*np.pi #step to create mesh
+tstep=0.000001#size of the time step
+x0=1.0 #magnitude of min/max x value
+y0=1.0 #" y value
+step=0.1
 
 
-t = np.arange(0,tf+tstep,tstep) #set up time for problem
+
+t = np.arange(0,tf+step,tstep) #set up time for problem
 
 x = np.arange(0,x0+step,step) #Solving 2D mhd problem
 y = np.arange(0,y0+step,step)  
@@ -35,56 +36,90 @@ rho = 1#the density of the plasma
 b0 = 0.35 #initial b field in Alfven units
 v0=0.35 #initial velocity
 
-P=np.zeros((len(x),len(y)))
+
 #Specify the pressure field
+P=np.zeros((len(x),len(y)))
+def P0(X,Y):
+	return -rho/4*(np.cos(2*X)+np.sin(2*Y))
 for i in range(len(x)):
 	for j in range(len(y)):
-		P[i][j] = -rho/4*(np.cos(2*x[i])+np.sin(2*y[j]))
+		P[i][j] = P0(x[i],y[i])
+
 
 #set up the B field and velocity arrays
 bx = np.zeros((len(t),len(x),len(y)))
 by = np.zeros((len(t),len(x),len(y)))
-
 vx = np.zeros((len(t),len(x),len(y)))
 vy = np.zeros((len(t),len(x),len(y)))
 
 
 
 #Initial conditions of the plasma
+def bx0(X,Y):
+	return b0*np.sin(X)*np.cos(Y)
+def by0(X,Y):
+	return b0*np.cos(X)*np.sin(Y)
+def vx0(X,Y):
+	return v0*np.sin(X)*np.cos(Y)
+def vy0(X,Y):
+	return -v0*np.cos(X)*np.sin(Y)
+
+
 for i in range(len(x)):
 	for j in range(len(y)):
-		bx[0][i][j] = b0*np.sin(x[i])*np.cos(y[j])
-		by[0][i][j] = b0*np.cos(x[i])*np.sin(y[j])
+		bx[0][i][j] = bx0(x[i],y[j])
+		by[0][i][j] = by0(x[i],y[j])
+		vx[0][i][j] = vx0(x[i],y[j])
+		vy[0][i][j] = vy0(x[i],y[j])
 
-
-		vx[0][i][j] = v0*np.sin(x[i])*np.cos(y[j])
-		vy[0][i][j] = -v0*np.cos(x[i])*np.sin(y[j])
-
-
-#Empty arrays to keep track of changes in time
+# Empty arrays to keep track of changes in time
 Ev=np.zeros(len(t))
 Eb=np.zeros(len(t))
 
 cen = len(x)/2
 
 Ev[0]=0.5*(vx[0][cen][cen]**2+vy[0][cen][cen]**2)
-Eb[0]=0.5*(bx[0][cen][cen]**2+by[0][cen][cen]**2)
+Eb[0]=0.5*(bx[0][cen][cen]**2+vy[0][cen][cen]**2)
+
+
+
+# def rk4x(f,xx,yy,a):
+	# k1=f(xx,yy)
+	# k2=f(xx+a*k1/2,yy)
+	# k3=f(xx+a*k2/2,yy)
+	# k4=f(xx+a,yy)
+	# fnew = 
+
+def rk4y(f,xx,yy,a):
+	k1=f(xx,yy)
+	k2=f(xx,yy+a*k1/2)
+	k3=f(xx,yy+a*k2/2)
+	k4=f(xx,yy+a*k3/2)
+	
+def dx(f,I,J,a):
+	fp = (f[I+1][J]-f[I-1][J])/(2*a)
+	return fp
+
+def dy(f,I,J,a):
+	fp = (f[I][J+1]-f[I][J-1])/(2*a)
+	return fp
+
 
 #Euler Step for B and v assuming fluid dominates
-
 i=0
 while i < len(t)-1:
 	for j in range(1,len(x)-1):
 		for k in range(1,len(y)-1):
-			bx[i+1][j][k] = bx[i][j][k]+tstep*(-vx[i][j][k]*(bx[i][j+1][k]-bx[i][j-1][k])/(2*step)+bx[i][j][k]*(vx[i][j+1][k]-vx[i][j-1][k])/(2*step)+bx[0][j][k])
-			by[i+1][j][k] = by[i][j][k]+tstep*(-vy[i][j][k]*(by[i][j][k+1]-vy[i][j][k-1])/(2*step)+by[i][j][k]*(vy[i][j][k+1]-vy[i][j][k-1])/(2*step)+by[0][j][k])
+
+			bx[i+1][j][k] = bx[i][j][k]+tstep*(-1*vx[i][j][k]*dx(bx[i],j,k,step)+bx[i][j][k]*dx(vx[i],j,k,step))
+			by[i+1][j][k] = by[i][j][k]+tstep*(-1*vy[i][j][k]*dy(by[i],j,k,step)+by[i][j][k]*dy(by[i],j,k,step))
 		
-			vx[i+1][j][k] = vx[i][j][k]+tstep*(-vx[i][j][k]*(vx[i][j+1][k]-vx[i][j-1][k])/(2*step)-(P[j+1][k]-P[j-1][k])/(2*step)-0.5*((bx[i][j+1][k]**2+by[i][j+1][k]**2-bx[i][j-1][k]**2-by[i][j-1][k]**2)/(2*step))+vx[0][j][k])
-			vy[i+1][j][k] = vy[i][j][k]+tstep*(-vy[i][j][k]*(vy[i][j][k+1]-vy[i][j][k-1])/(2*step)-(P[j][k+1]-P[j][k-1])/(2*step)-0.5*((bx[i][j][k+1]**2+by[i][j][k+1]**2-bx[i][j][k-1]**2-by[i][j][k-1]**2)/(2*step))+vx[0][j][k])
+			vx[i+1][j][k] = vx[i][j][k]+tstep*(-1*vx[i][j][k]*dx(vx[i],j,k,step)-dx(P,j,k,step)-0.5*dx(bx[i]**2,j,k,step))
+			vy[i+1][j][k] = vy[i][j][k]+tstep*(-1*vx[i][j][k]*dy(vy[i],j,k,step)-dy(P,j,k,step)-0.5*dy(by[i]**2,j,k,step))
 
 
 	Ev[i+1]=0.5*(vx[i+1][cen][cen]**2+vy[i+1][cen][cen]**2)
-	Eb[i+1]=0.5*(bx[i+1][cen][cen]**2+by[i+1][cen][cen]**2)
+	Eb[i+1]=0.5*(bx[i+1][cen][cen]**2+vy[i+1][cen][cen]**2)
 	i=i+1
 			
 
@@ -110,20 +145,20 @@ plt.close()
 
 
 
-fig1=plt.figure(figsize=(16,8))
-plt.xlabel('x')
-plt.ylabel('y')
-plt.streamplot(X, Y, vx[80],vy[80],color='k')
+# fig1=plt.figure(figsize=(16,8))
+# plt.xlabel('x')
+# plt.ylabel('y')
+# plt.streamplot(X, Y, vx[80],vy[80],color='k')
 
 
 
-plt.show()
-plt.close()
+# plt.show()
+# plt.close()
 
-fig2=plt.figure(figsize=(8,8))
-plt.xlabel('x')
-plt.ylabel('y')
-plt.imshow(np.sqrt(bx[80]**2+by[80]**2),cmap='plasma')
+# fig2=plt.figure(figsize=(8,8))
+# plt.xlabel('x')
+# plt.ylabel('y')
+# plt.imshow(np.sqrt(bx[80]**2+by[80]**2),cmap='plasma')
 
-plt.show()
-plt.close()
+# plt.show()
+# plt.close()
