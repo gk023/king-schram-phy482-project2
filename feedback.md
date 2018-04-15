@@ -7,6 +7,12 @@ Thanks, Danny
 
 ------
 
+## Homework assignment 5
+
+Feedback: I'm really glad to find that the issue was probably that the problem was stiff and that adapting the time step helped. I think you have a good plan and already have a reasonable set of figures and such to prepare a poster draft, which I would suggest that you try to do this week as it's the last week for formal feedback. Depending on what you find with the adaptive solution or the builtin integrator, you might have different things that you can present. One thing that will be critical will be explaining the equations in question and how you are solving them to produce solutions. You will want to aim this at your classmates, so they can understand what is going on and why this problem is being solved the way that it is. Great work this week!
+
+* Score: 20/20
+
 ## Homework assignment 4
 
 Feedback: Folks, I'm glad to see that you are getting something that works (at least for a short timescale). I'm also glad to see you trying to debug it and think about other resources that can help you with it. The kind of problem that you solving is sometimes the result of a stiff equation (https://en.wikipedia.org/wiki/Stiff_equation) where for some regime the problem can be solved easily, but then you get to a point where things change a lot you need a narrower window to solve it (i.e., an adaptive solution). This is because the errors you make compund really fast. Now that you have written things from scratch, you might compare this to a simple 4th order Runge-Kutta solver, which is a also easy to write (I have a book that you can use or you can google it) or a builtin scipy integrator (https://docs.scipy.org/doc/scipy-0.13.0/reference/generated/scipy.integrate.ode.html). Even if you don't solve this issue, it would be interesting to compare the different numerical approaches to find out what kind of issue you think you are having. A lot of computational research is finding or developing the right algorithm to control errors like this. It might not seem like it right now because it's not working, but you are doing good work that has to be done.
