@@ -7,6 +7,12 @@ Thanks, Danny
 
 ------
 
+## Homework assignment 6
+
+Feedback: Folks, I'm glad to give feedback on the poster and I do hope that you get your module working this week. First thing: there's a lot of text on your poster. Try to break up things into bullet points and give some space between things. You want to reduce the text so that it's a reminder of what is important, and not a prescription of what to say. This goes for the intro and the methods section. Also, what is a dynamo? You say you are looking into them, but don't say what they are and why the matter. I'd take some small space you get back from cutting text to say just a bit about them. The figures are fine, but the captions don't explain what we should get from them. I don't think the role of a figure is to convey what you did, but rather what sense should we make of the figure? Your method sections already says what you did. Depending on what you finish your conclusions should talk about what results you have and where things can go. It should be written like you are doing this for your research not for class. I'm glad that you got a lot out of it, but in the poster you are sharing your knowldge about modeling dynamos with pyro to your classmates, so take that framing. Make sure to put your names at the top, etc, because you might not be around when the poster first goes up. Good job getting this draft together this week.
+
+* Score: 20/20
+
 ## Homework assignment 5
 
 Feedback: I'm really glad to find that the issue was probably that the problem was stiff and that adapting the time step helped. I think you have a good plan and already have a reasonable set of figures and such to prepare a poster draft, which I would suggest that you try to do this week as it's the last week for formal feedback. Depending on what you find with the adaptive solution or the builtin integrator, you might have different things that you can present. One thing that will be critical will be explaining the equations in question and how you are solving them to produce solutions. You will want to aim this at your classmates, so they can understand what is going on and why this problem is being solved the way that it is. Great work this week!
